@@ -1,0 +1,9 @@
+name: "evolution"
+version: "0.1.8"
+author: "Michael Bürgerling <michael.buergerling@gmail.com>"
+description: "An Evolutionary Algorithm library for Dart featuring Differential Evolution for projects on any platform."
+homepage: "https://github.com/welopment/evolution/blob/master/pubspec.yaml"
+environment:
+  sdk: ">=2.6.0 <3.0.0"
+dependencies:
+  optima: ^0.1.1
