@@ -55,6 +55,7 @@ void parallelPopulations(
         /*rand +*/ best + mutated + bestCrossover + randCrossover,
         r,
         fitness);
+        
     Population p8 = all.copy();
     Population p9 = p8.sorted();
     Population p10 = p9.select(sizeN);
