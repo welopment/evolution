@@ -57,7 +57,6 @@ Agent diff(
     double wz = w / ((z == 0 ? 1 : z)).toDouble();
 
     /*
-    // random survivors
     Population p01 = p0.copy();
     p01.shuffle(r.r);
     Population rand = p01.select(randN);

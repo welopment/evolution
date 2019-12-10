@@ -16,9 +16,9 @@ class Population extends XList<Agent> {
   //List<Agent> l;
   Random r;
 
-  /// [fitness] is mutable attribute containing a function that calculates the
-  /// fitness on demand. The function is given an [Agent] as argument.
-
+  /// A function that evaluates the fitness on demand.
+  /// The function is assigned by the Constructor and
+  /// is a called on each [Agent].
   double Function(Agent) fitness;
 
   @override
@@ -26,12 +26,13 @@ class Population extends XList<Agent> {
     return Population(this.map((Agent a) => a.copy()).toList(), r, fitness);
   }
 
-  /// A functional version of [mutation]
+  /// A functional version of [mutation], calling mutation on each [Agent].
   Population mutation([double w = 1.0]) {
     return Population(
         this.map((Agent a) => a.mutation(w)).toList(), r, fitness);
   }
 
+  /// A imperative version of [mutation], calling mutationI on each [Agent].
   Population mutationI([double w = 1.0]) {
     this.forEach((Agent a) => a.mutationI(w));
     return this;
@@ -51,8 +52,6 @@ class Population extends XList<Agent> {
   /// Generate [Population] by calling the implementation of Differential Evolution
   /// of each indivicual [Agent], i.e. adding the weighted difference
   /// of two randomly [select]ed [Agent]s to another randomly [select]ed [Agent].
-  ///
-  ///
   Population differential(int n, [double w = 1.0]) {
     if (this.length < 3) {
       throw Exception("differential needs at least 3 Agents");
@@ -121,13 +120,19 @@ class Population extends XList<Agent> {
     }
   }
 
-  /// [sorted] constructs a new population [Population] by copying the original population and sorting
+  /// Constructs a new [Population] by copying the original population and sorting
   /// it by fitness of the individuals using [_ordering].
   Population sorted() {
     List<Agent> ret = base.map((Agent a) => Agent(a.base, r, a.f)).toList();
-    base.sort(_ordering); // notwendig? möglich?
     ret.sort(_ordering);
     return Population(ret, r, fitness);
+  }
+
+  /// Sorts this [Population] by fitness of the individuals using [_ordering].
+  /// This is an imperativ version of [sorted].
+  Population sortedI() {
+    base.sort(_ordering);
+    return this;
   }
 
   @override
