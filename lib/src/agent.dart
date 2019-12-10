@@ -15,6 +15,8 @@ class Agent extends XList<double> {
   double Function(List<double>) f;
   Random r;
 
+  /// Generates a new [Agent] by calulating the arithmetic mean of
+  /// each property of [this] and an [other] Agent
   Agent crossover(Agent other) {
     /*
     List<double> lret = <double>[];
@@ -43,6 +45,10 @@ class Agent extends XList<double> {
     return Agent(lret, r);
   }*/
 
+  /// Implementation of the Differential Evolution process on [Agent].
+  /// This adds the weighted difference between each property of two
+  /// other [Agent]s to the the respective property of this [Agent].
+  /// The default weight is 1.0.
   Agent differential(Agent other1, Agent other2, [double w = 1.0]) {
     if (this.length != other1.length || this.length != other2.length) {
       throw Exception("Agent.differential: Different lengths.");
@@ -80,6 +86,9 @@ class Agent extends XList<double> {
     }
     return Agent(lret, r); 
   }*/
+
+  /// Returns an Agent with values guaranteed to be between
+  /// given lower an upper bound. Funtional version.
   Agent confined(lower, upper) => Agent(
       this.map((d) {
         double k = d > upper ? (d % upper) : d;
@@ -89,6 +98,21 @@ class Agent extends XList<double> {
       r,
       this.f);
 
+  /// Returns an Agent with values guaranteed to be between
+  /// given lower an upper bound. Imperative version.
+  Agent confinedI(lower, upper) {
+    // replace with forEachi
+    this.mapi((int i, double d) {
+      double k = d > upper ? (d % upper) : d;
+      double m = k < lower ? (k % lower) : k;
+      this[i] = m;
+      return m;
+    });
+    return this;
+  }
+
+  /// Generates an Agent of size [len] from values returned by a function [f]
+  /// applied on the indices of the properties of the Agent.
   static Agent generate(int len, double Function(int) f, Random random,
       double Function(List<double>) fit) {
     return Agent(List.generate(len, f, growable: false), random, fit);

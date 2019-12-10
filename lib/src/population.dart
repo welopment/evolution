@@ -48,6 +48,11 @@ class Population extends XList<Agent> {
     return Population(lr, r, fitness);
   }
 
+  /// Generate [Population] by calling the implementation of Differential Evolution
+  /// of each indivicual [Agent], i.e. adding the weighted difference
+  /// of two randomly [select]ed [Agent]s to another randomly [select]ed [Agent].
+  ///
+  ///
   Population differential(int n, [double w = 1.0]) {
     if (this.length < 3) {
       throw Exception("differential needs at least 3 Agents");
@@ -63,26 +68,47 @@ class Population extends XList<Agent> {
     return Population(lr, r, fitness);
   }
 
-  /// [Population.generate] constructs a new population [Population] by applying a function to the indexes of
+  /// Constructs a new population [Population] by applying a function to the indexes of
   /// the individuals from the resulting population.This constructor is similar to the
   /// respective contructor of List with the same name.
   static Population generate(
-    int len,
-    Agent Function(int) f,
-    Random r,
-    double Function(List<double>) fitness,
+    int len, // size of the resulting Population
+    Agent Function(int) f, // generator function
+    Random r, // random number generator object handed to each Agent
+    double Function(List<double>)
+        fitness, // evaluation function handed to each Agent
   ) {
     var pr = List.generate(len, f, growable: true);
     return Population(pr, r, fitness);
   }
 
+  /// Returns an Agent with values guaranteed to be between
+  /// given lower an upper bound. Functional version.
   Population confined(lower, upper) => Population(
       this.map((d) => d.confined(lower, upper)).toList(), r, this.fitness);
+
+  /// Returns an Agent with values guaranteed to be between
+  /// given lower an upper bound. Imperative version.
+  Population confinedI(lower, upper) => Population(
+      this.map((d) => d.confinedI(lower, upper)).toList(), r, this.fitness);
+
+  /// Creates a new Population by selecting, i.e. copying, the first [i] individuals
+  /// from this [Population]. Functional version.
 
   Population select(int i) {
     int l = this.length;
     int s = i > l ? l : i;
+    // better: int s = i > l ? l : i >= 0 ? i : l;
     return Population(this.sublist(0, s), r, fitness);
+  }
+
+  /// Selects the first [i] individuals of this [Population] by dropping
+  /// all other individuals from this [Population]. Imperative version of [select].
+  Population selectI(int i) {
+    int l = this.length;
+    int s = i > l ? l : i >= 0 ? i : l;
+    this.removeRange(s, l);
+    return this;
   }
 
   int _ordering(Agent a1, Agent a2) {
