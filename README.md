@@ -25,13 +25,20 @@ To give it a try, simply run the example.
 ```dart
 dart ./example/main.dart 
 ```
-The Result of the example solves the following optimization tasks: 
+The example runs the following optimization tasks: 
 
 * Sphere100 is version of the sphere function with a global minimum at (100.0, ..., 100.0).
 * Sphere100 (restricted) is the same problem to be solved within a restricted search space.
 * Ackley10 is a version of the ackley function with a global minimum at (10.0, ..., 10.0).
 * Ackley100 is  a version of the ackley function with a global minimum at (100.0, ..., 100.0).
 * Ackley100 (restricted) is the same problem to be solved within a restricted search space.
+
+It will run several trials of each of the problems, printing first the number of the trial , the fitness value [f] (small is better) and the solution [ag] that is represented by an Agent:
+
+```dart
+Sphere100 - Trial Nr.: 0 - f: 1.6839632575509754e-7 - ag: Agent, 100.00008034891927, 99.99975283543522, 100.00022001227732, 100.00022900797512
+...
+```
 
 # A simple algorithm
 
@@ -69,10 +76,9 @@ Population selected = differential.copy().sorted().select(sizeN);
 
 # Differential Evolution
 
-Differential Evolution is defined as:
+A more specific Algorithm is given as Differential Evolution. It is defined as:
 
 ```dart
-
 /// A version of Differential Evolution with unrestricted search space.
 Agent diff(
   int positions, // number of variables, i.e dimensionality of the problem
@@ -141,7 +147,6 @@ Agent diff(
 To improve performace, use a restricted search space and the corresponding version of the algorithm: 
 
 ```dart
-/// Version of [diff] for opitimizing with an restricted search space.
 Agent diff2(
   int positions, //dimensionality of the problem
   int sizeN, // number of solution candidates to be entered in each new generation 
@@ -201,13 +206,3 @@ Agent diff2(
   return res.first;
 }
 ```
-
-
-# Evolutionary Algorithms
-
-Evolutionary algorithms [EA] optimize a problem iteratively by trying to improve a candidate solution stochastically with regard to a given measure of quality.
-An EA maintains a population of candidate solutions and creates new candidate solutions by mutation and recombination from existing ones keeping whichever candidate solution has the best score or fitness on the optimization problem. 
-EAs make few assumptions about the problem being optimized except for restricting the search space of candidate solutions. In this way the optimization problem is treated as a black box that merely provides a measure of quality given a candidate solution in terms of its fitness and the gradient of the problem function is therefore not needed. 
-
-EAs can be used for multidimensional real-valued functions but does not use the gradient of the problem being optimized, which means they do not require the optimization problem to be differentiable, as is required by classic optimization methods such as gradient descent and quasi-newton methods. They can therefore also be used on optimization problems that are not even continuous, are noisy, change over time, etc. EAs do not guarantee an optimal solution is ever found.
-
