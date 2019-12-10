@@ -6,22 +6,27 @@ import 'package:evolution/evolution.dart';
 /// An algorithm based on splitting the population
 /// into one subpopulation subject to mutation and recombination
 /// and another subpopulation of survivors that remain unchanged.
-///
+
 void parallelPopulations(
-  int positions, //
-  int sizeN, //
-  int bestN, //
-  int randN, //
-  int seed, //
-  int steps, //
-  double w,
-  fitness,
+  int positions, // number of variables, i.e dimensionality of the problem
+  int sizeN, // number of [Agent]s in the population
+  int bestN, // number of [Agent]s selected by fitness
+  int randN, // number of [Agent]s randomly selected
+  int seed, // seeding the random number generator
+  int steps, // number of generations
+  double w, // weighting factor used in differential evolution
+  fitness, // evaluation function
 ) {
   //int seed = DateTime.now().millisecond;
   Random r = Random(seed);
 
   int z = 0;
-  Population p0 = gp(sizeN, positions, r, fitness);
+  Population p0 = generatePopulation(
+    sizeN, // size of Population
+    positions, // degrees of freedom
+    r, // random number generator
+    fitness, // fitness function
+  );
 
   while (z < steps) {
     double wz = w / (z == 0 ? 1 : z).toDouble();
@@ -55,7 +60,7 @@ void parallelPopulations(
         /*rand +*/ best + mutated + bestCrossover + randCrossover,
         r,
         fitness);
-        
+
     Population p8 = all.copy();
     Population p9 = p8.sorted();
     Population p10 = p9.select(sizeN);

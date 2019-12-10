@@ -8,4 +8,6 @@ export './src/generate.dart';
 export './src/linear.dart';
 export './src/parallel.dart';
 export './src/differential.dart';
+export './src/exception.dart';
+
 //export './src/optima.dart';

@@ -8,13 +8,15 @@ import 'package:evolution/evolution.dart';
 /// and improving candidate solutions.
 ///
 class Population extends XList<Agent> {
+  /// Constructs a [Population] of [Agent]s from a List [l],
+  /// a random generator [Random], and a evaluation function [fitness]
   Population(List<Agent> l, this.r, this.fitness) {
     base = l;
   }
   //List<Agent> l;
   Random r;
 
-  /// [fitness] is a mutable attribute containing a function that calculates the
+  /// [fitness] is mutable attribute containing a function that calculates the
   /// fitness on demand. The function is given an [Agent] as argument.
 
   double Function(Agent) fitness;
@@ -24,9 +26,15 @@ class Population extends XList<Agent> {
     return Population(this.map((Agent a) => a.copy()).toList(), r, fitness);
   }
 
+  /// A functional version of [mutation]
   Population mutation([double w = 1.0]) {
     return Population(
         this.map((Agent a) => a.mutation(w)).toList(), r, fitness);
+  }
+
+  Population mutationI([double w = 1.0]) {
+    this.forEach((Agent a) => a.mutationI(w));
+    return this;
   }
 
   Population crossover() {

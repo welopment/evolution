@@ -1,39 +1,27 @@
 import 'package:evolution/evolution.dart';
 
-Population gp(
-  int lengthPopulation,
-  int lengthAgent,
+///
+/// Generate an initial [Population] of [Agents]
+/// with all variables == 0.0.
+///
+Population generatePopulation(
+  int sizePopulation,
+  int sizeAgent,
   Random r,
-  fitness,
+  fitness, // fitness function
 ) {
   List<Agent> as = XList.generate<Agent>(
-    lengthPopulation,
+    sizePopulation,
     (i) => Agent(
-      List.generate(lengthAgent, (i) => 0.0),
+      List.generate(sizeAgent, (i) => 0.0),
       r,
       fitness,
     ),
   ).toList();
   Population rp = Population(
-    as,
-    r,
-    fitness,
+    as, // List of Agents
+    r, // random number generator
+    fitness, // fitness function
   );
-  return rp;
-}
-
-/// Generate a population
-Population gpf(
-  int lengthPopulation,
-  int lengthAgent,
-  Random r,
-  double Function(List<double>) f,
-) {
-  List<Agent> xl = XList.generate<Agent>(
-    lengthPopulation,
-    (i) => Agent(List.generate(lengthAgent, (int i) => 0.0), r, f),
-  ).toList();
-  Population rp = Population(xl, r, f);
-
   return rp;
 }

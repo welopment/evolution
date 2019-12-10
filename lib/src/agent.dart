@@ -63,8 +63,16 @@ class Agent extends XList<double> {
         this.f);
   }
 
+  /// A functional version of [mutation].
   Agent mutation([double w = 1.0]) => Agent(
       this.map((double d) => d + (r.nextDouble() * w)).toList(), r, this.f);
+
+  /// An imperative version of [mutation].
+  Agent mutationI([double w = 1.0]) {
+    this.forEach((double d) => d + (r.nextDouble() * w));
+    return this;
+  }
+
   /*{
     List<double> lret = <double>[];
     for (int i = 0; i < this.length; i++) {
