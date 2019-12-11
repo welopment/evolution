@@ -15,7 +15,7 @@ dependencies:
 Add the import statement to your source files:
 
 ```dart
-import 'package:evolutionSimple/evolution.dart';
+import 'package:evolution/evolution.dart';
 ```
 
 Or, give it a try and run the example:
