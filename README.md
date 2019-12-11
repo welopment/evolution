@@ -1,9 +1,7 @@
 Evolution
 =========
 
-A simple to use optimization library based on evolutionary algorithms.
-
-It can be used in both dart and flutter projects.
+An optimization library based on evolutionary algorithms for use in dart and flutter projects.
 
 # Getting started
 
@@ -14,28 +12,28 @@ dependencies:
   evolution: #latest version
 ```
 
-Add this import statement to your source files:
+Add the import statement to your source files:
 
 ```dart
 import 'package:evolutionSimple/evolution.dart';
 ```
 
-To give it a try, simply run the example. 
+Or, give it a try and run the example:
 
 ```dart
 dart ./example/main.dart 
 ```
-The example runs the following optimization tasks: 
+The example consists of some simple optimization tasks: 
 
-* Sphere100 is version of the sphere function with a global minimum at (100.0, ..., 100.0).
-* Sphere100 (restricted) is the same problem to be solved within a restricted search space.
-* Ackley10 is a version of the ackley function with a global minimum at (10.0, ..., 10.0).
-* Ackley100 is  a version of the ackley function with a global minimum at (100.0, ..., 100.0).
-* Ackley100 (restricted) is the same problem to be solved within a restricted search space.
+* Sphere100 is a version of the sphere function with global minimum at (100.0, ..., 100.0).
+* Sphere100 (restricted) is the same problem solved on a restricted search space.
+* Ackley10 is a version of the ackley function with global minimum at (10.0, ..., 10.0).
+* Ackley100 is  a version of the ackley function with global minimum at (100.0, ..., 100.0).
+* Ackley100 (restricted) is the same problem solved on a restricted search space.
 
-It will run several trials of each of the problems, printing first the number of the trial , the fitness value [f] (small is better) and the solution [ag] that is represented by an Agent.
+It will run 10 trials of the same problem, printing the number of the trial , the fitness value [f] (small is better) and the solution [ag] represented by an Agent.
 
-# A simple algorithm
+# Build a simple algorithm
 
 1. Generate an initial population of candidate solutions (Agents), each of which will have property values of 0.0: 
 
@@ -82,9 +80,9 @@ Population selected = differential.sortedI().selectI(sizeN);
 5. Loop!
 
 
-# Differential Evolution
+# Try Differential Evolution
 
-A more specific Algorithm is given as Differential Evolution. It is defined as:
+A more specific algorithm is Differential Evolution. It is defined as:
 
 ```dart
 /// A version of Differential Evolution with unrestricted search space.
