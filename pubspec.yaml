@@ -1,5 +1,5 @@
 name: "evolution"
-version: "0.1.8"
+version: "0.1.9"
 author: "Michael Bürgerling <michael.buergerling@gmail.com>"
 description: "An Evolutionary Algorithm library for Dart featuring Differential Evolution for projects on any platform."
 homepage: "https://github.com/welopment/evolution/blob/master/pubspec.yaml"
