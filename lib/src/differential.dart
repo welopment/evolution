@@ -63,26 +63,24 @@ Agent diff(
     */
 
     // best survivors
-    Population p02 = p0.copy();
-    Population p021 = p02.sorted();
-    Population best = p021.select(bestN);
+    Population best = p0.sorted().select(bestN);
 
     // mutation
-    Population p03 = p0.copy();
-    Population mutated = p03.mutation(wz / 10.0);
+    Population mutated = p0.mutation(wz / 10.0);
 
+    // differential operation
     Population differential = mutated.differential(diffN, wz * 10.0);
 
-    // combine candidate solutions
+    // combine subpopulations
     Population all = Population(
         /*rand + */ best + differential,
         r,
         fitness);
-    Population p8 = all.copy();
-    Population p9 = p8.sorted();
-    Population p10 = p9.select(sizeN);
 
-    p0 = p10;
+    // best survivors of combined population
+    Population result = all.sorted().select(sizeN);
+
+    p0 = result;
     z++;
   }
   Population res = p0.sorted().select(1);
@@ -127,26 +125,24 @@ Agent diff2(
     */
 
     // best survivors
-    Population p02 = p0.copy();
-    Population p021 = p02.sorted();
-    Population best = p021.select(bestN);
+    Population best = p0.sorted().select(bestN);
 
     // mutation
-    Population p03 = p0.copy();
-    Population mutated = p03.mutation(wz / 10.0).confined(lower, upper);
+    Population mutated = best.mutation(wz / 10.0).confined(lower, upper);
 
+    // differential operation
     Population differential = mutated.differential(diffN, wz * 10.0);
 
-    // combine
+    // combine subpopulations
     Population all = Population(
         /*rand + */ best + differential,
         r,
         fitness);
-    Population p8 = all.copy();
-    Population p9 = p8.sorted();
-    Population p10 = p9.select(sizeN);
 
-    p0 = p10;
+    // select best of combined population
+    Population result = all.sorted().select(sizeN);
+
+    p0 = result;
     z++;
   }
   Population res = p0.sorted().select(1);

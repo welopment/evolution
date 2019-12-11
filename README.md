@@ -33,12 +33,7 @@ The example runs the following optimization tasks:
 * Ackley100 is  a version of the ackley function with a global minimum at (100.0, ..., 100.0).
 * Ackley100 (restricted) is the same problem to be solved within a restricted search space.
 
-It will run several trials of each of the problems, printing first the number of the trial , the fitness value [f] (small is better) and the solution [ag] that is represented by an Agent:
-
-```dart
-Sphere100 - Trial Nr.: 0 - f: 1.6839632575509754e-7 - ag: Agent, 100.00008034891927, 99.99975283543522, 100.00022001227732, 100.00022900797512
-...
-```
+It will run several trials of each of the problems, printing first the number of the trial , the fitness value [f] (small is better) and the solution [ag] that is represented by an Agent.
 
 # A simple algorithm
 
@@ -59,6 +54,12 @@ Population start = generatePopulation(
 Population mutated = start.mutation();
 ```
 
+Instead, you can use the imperative version:
+
+```dart
+Population mutated = start.mutationI();
+```
+
 3. Generate a differential population of size [diffN].  
 
 ```dart
@@ -68,8 +69,15 @@ Population differential = mutated.differential(diffN);
 4. Select a portion of the population of [sizeN] as survivors.  
 
 ```dart
-Population selected = differential.copy().sorted().select(sizeN);
+Population selected = differential.sorted().select(sizeN);
 ```
+
+Instead, you can use the imperative version:
+
+```dart
+Population selected = differential.sortedI().selectI(sizeN);
+```
+
 
 5. Loop!
 
@@ -91,7 +99,6 @@ Agent diff(
   double w, // weighting factor used in differential evolution
   double Function(List<double>) fitness, // evaluation function
 ) {
-  //int seed = DateTime.now().millisecond;
   Random r = Random(seed);
 
   int z = 0;
@@ -105,38 +112,25 @@ Agent diff(
   while (z < steps) {
     double wz = w / ((z == 0 ? 1 : z)).toDouble();
     
-    
-    // Optional:
-    // Selecting survivors randomly gives less fit 
-    // Agents a chance to improve the result in case
-    // search is trapped in a local minimum. 
-    /*
-    Population p01 = p0.copy();
-    p01.shuffle(r.r);
-    Population rand = p01.select(randN);
-    */
-
     // best survivors
-    Population p02 = p0.copy();
-    Population p021 = p02.sorted();
-    Population best = p021.select(bestN);
+    Population best = p0.sorted().select(bestN);
 
     // mutation
-    Population p03 = p0.copy();
-    Population mutated = p03.mutation(wz / 10.0);
+    Population mutated = p0.mutation(wz / 10.0);
 
+    // differential operation
     Population differential = mutated.differential(diffN, wz * 10.0);
 
-    // combine candidate solutions
+    // combine subpopulations
     Population all = Population(
-        /*rand + */ best + differential,
+        best + differential,
         r,
         fitness);
-    Population p8 = all.copy();
-    Population p9 = p8.sorted();
-    Population p10 = p9.select(sizeN);
 
-    p0 = p10;
+    // best survivors of combined population
+    Population result = all.sorted().select(sizeN);
+
+    p0 = result;
     z++;
   }
   Population res = p0.sorted().select(1);
@@ -160,7 +154,6 @@ Agent diff2(
   double lower, // lower bound of the search space
   double upper, // upper bound of the search space
 ) {
-  //int seed = DateTime.now().millisecond;
   Random r = Random(seed);
 
   int z = 0;
@@ -169,39 +162,28 @@ Agent diff2(
   while (z < steps) {
     double wz = w / ((z == 0 ? 1 : z)).toDouble();
 
-    // selecting survivors randomly gives less fit 
-    // solution a chance to improve the result in case
-    // the search is trapped in a local minimum. 
-
-    /*
-    Population p01 = p0.copy();
-    p01.shuffle(r.r);
-    Population rand = p01.select(randN);
-    */
-
     // best survivors
-    Population p02 = p0.copy();
-    Population p021 = p02.sorted();
-    Population best = p021.select(bestN);
+    Population best = p0.sorted().select(bestN);
 
     // mutation
-    Population p03 = p0.copy();
-    Population mutated = p03.mutation(wz / 10.0).confined(lower, upper);
+    Population mutatedConfined = p0.mutation(wz / 10.0).confined(lower, upper);
 
-    Population differential = mutated.differential(diffN, wz * 10.0);
+    // differential operation
+    Population differential = mutatedConfined.differential(diffN, wz * 10.0);
 
-    // combine
+    // combine subpopulations
     Population all = Population(
-        /*rand + */ best + differential,
+        best + differential,
         r,
         fitness);
-    Population p8 = all.copy();
-    Population p9 = p8.sorted();
-    Population p10 = p9.select(sizeN);
 
-    p0 = p10;
+    // best survivors of combined population
+    Population result = all.sorted().select(sizeN);
+
+    p0 = result;
     z++;
   }
+
   Population res = p0.sorted().select(1);
   return res.first;
 }

@@ -3,7 +3,7 @@ import 'package:optima/optima.dart';
 
 void main() {
   //var seed = DateTime.now().millisecond;
-
+/*
   print(
       "Optimize a version of the sphere function centered at (100.0, ... , 100.0) on the unrestricted version of the problem.");
   10.times((int i) {
@@ -37,10 +37,10 @@ void main() {
     print("Ackley100 - Trial Nr.: ${i} - f: ${result.fitness()} - ag: ${result}");
     return result;
   });
-
+*/
   print("Use the version restricted on (50, 150) in each dimension.");
   10.times((int i) {
-    var result = diff2(4, 25, 10, 10, 25, i, 1000, 10.0, ackley100, 50, 150);
+    var result = diff2(4, 25, 10, 10, 25, i, 1000, 100.0, ackley100, 50, 150);
     print(
         "Ackley100 (restricted) - Trial Nr.: ${i} - f: ${result.fitness()} - ag: ${result}");
     return result;
